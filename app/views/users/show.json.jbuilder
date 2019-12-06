@@ -1,5 +1,5 @@
 json.data do
-    json.user do
-      json.(@user, :id, :email)
-    end
+  json.user do
+    json.(@user, :id, :email)
   end
+end
