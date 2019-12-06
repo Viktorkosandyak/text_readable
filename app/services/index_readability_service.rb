@@ -8,7 +8,7 @@ class IndexReadabilityService
   end
   
   def calculate
-    (206.835 - 1.015 * average_sentence_length - 84.6 * average_number_of_syllables_per_word)
+    (206.835 - 1.015 * average_sentence_length - 84.6 * average_number_of_syllables_per_word).to_i
   end
 
   private

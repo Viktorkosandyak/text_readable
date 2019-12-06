@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :post do
-    content { "PostgreSQL is a powerful, open source object-relational database system "}
+    content { "PostgreSQL allows columns of a table to be defined as variable-length multidimensional arrays." }
     user { nil }
   end
 end
