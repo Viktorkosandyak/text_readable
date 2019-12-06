@@ -14,32 +14,22 @@ class IndexReadabilityService
   private
 
   def average_number_of_syllables_per_word
-    count_word = content.split.count
-    syllable_in_word = content.split.map do |x|
-      x.scan(/[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/)
-    end
-    amount = 0
-    syllable_in_word.map{ |arr| amount += arr.size }
-    (amount.to_f / count_word)
+    (avarage_syllables_per_word / words_quatntity)
+  end
+
+  def avarage_syllables_per_word
+    content.split.map { |x| x.scan(/[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/) }.flatten.size.to_f
+  end
+
+  def words_quatntity
+    content.split.count
   end
 
   def average_sentence_length
-    @count_sentence = content.scan(/[^\.!?]+[\.!?]/).map(&:strip).count
-    more_accurate_count_sentence
-    count_words = 1
-    for i in 1..content.length
-      count_words += 1 if (content[i] == ' ')
-    end
-    count_words.to_f / @count_sentence
+    words_quatntity / sentences_quantity
   end
 
-  def more_accurate_count_sentence
-    if @count_sentence == 0   
-      @count_sentence += 1
-    elsif content[-1] == '.' || content[-1] == '?' || content[-1] == '!'  
-      @count_sentence
-    else  
-      @count_sentence += 1
-    end
+  def sentences_quantity
+    content.scan(/[^\.!?]+[\.!?]/).map(&:strip).count
   end
 end

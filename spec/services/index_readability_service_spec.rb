@@ -14,7 +14,7 @@ RSpec.describe IndexReadabilityService, type: :service do
   end
 
   describe 'when sentence is easier' do
-    let(:content) { 'PostgreSQL is a powerful, open source object-relational database system ' }
+    let(:content) { 'PostgreSQL is a powerful, open source object-relational database system.' }
     let(:readability_index) { IndexReadabilityService.new(content).calculate }
 
     it 'return readability index 0' do
