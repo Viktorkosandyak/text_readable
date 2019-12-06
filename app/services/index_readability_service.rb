@@ -1,40 +1,39 @@
-class IndexReadabilityService
+# frozen_string_literal: true 
 
-  def self.calculate(content)
-    average_number_of_syllables_per_word(content)
-    average_sentence_length(content)
-    result = (206.835 - 1.015 * @asl.to_f - 84.6 * @asw.to_f)
-    if result < 0
-      result = 0
-    end
-    result
+class IndexReadabilityService
+  attr_reader :content
+
+  def initialize(content)
+    @content = content
+  end
+  
+  def calculate
+    (206.835 - 1.015 * average_sentence_length - 84.6 * average_number_of_syllables_per_word)
   end
 
   private
 
-  def self.average_number_of_syllables_per_word(content)
+  def average_number_of_syllables_per_word
     count_word = content.split.count
     syllable_in_word = content.split.map do |x|
       x.scan(/[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/)
     end
     amount = 0
-    syllable_in_word.map{|arr| amount += arr.size }
-    @asw = (amount.to_f/count_word)
+    syllable_in_word.map{ |arr| amount += arr.size }
+    (amount.to_f / count_word)
   end
 
-  def self.average_sentence_length(content)
+  def average_sentence_length
     @count_sentence = content.scan(/[^\.!?]+[\.!?]/).map(&:strip).count
-    more_accurate_count_sentence(content)
+    more_accurate_count_sentence
     count_words = 1
     for i in 1..content.length
-      if (content[i] == ' ')
-        count_words +=1
-      end
+      count_words += 1 if (content[i] == ' ')
     end
-    @asl = count_words.to_f/@count_sentence
+    count_words.to_f / @count_sentence
   end
 
-  def self.more_accurate_count_sentence(content)
+  def more_accurate_count_sentence
     if @count_sentence == 0   
       @count_sentence += 1
     elsif content[-1] == '.' || content[-1] == '?' || content[-1] == '!'  
