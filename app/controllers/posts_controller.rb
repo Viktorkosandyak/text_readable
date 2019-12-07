@@ -14,7 +14,7 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params.merge(user: current_user))
-    @post.index_readability = IndexReadabilityService.new(@post.content).calculate
+    @post.index_readability = IndexReadabilityService.new(@post.content + ".").call
     if @post.save
       render :show, status: :created
     else
@@ -24,7 +24,7 @@ class PostsController < ApplicationController
 
   def update
     if @post.update(post_params)
-      @post.index_readability = IndexReadabilityService.new(@post.content).calculate
+      @post.index_readability = IndexReadabilityService.new(@post.content + ".").call
       render :show, status: 200
     else
       render json: @post.errors, status: :unprocessable_entity

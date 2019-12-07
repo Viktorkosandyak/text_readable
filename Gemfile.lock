@@ -55,6 +55,7 @@ GEM
     coderay (1.1.2)
     concurrent-ruby (1.1.5)
     crass (1.0.5)
+    detect_language (1.1.2)
     devise (4.7.1)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -233,6 +234,7 @@ DEPENDENCIES
   bootsnap (>= 1.1.0)
   bullet
   byebug
+  detect_language
   devise
   devise-jwt (~> 0.5.9)
   dotenv-rails
