@@ -6,19 +6,39 @@ class IndexReadabilityService
   def initialize(content)
     @content = content
   end
-  
+
   def calculate
-    (206.835 - 1.015 * average_sentence_length - 84.6 * average_number_of_syllables_per_word).to_i
+    (206.835 - sentences_coefficient[locale] * average_sentence_length - syllables_coefficient[locale] * average_number_of_syllables_per_word).to_i
   end
 
   private
+
+  def syllables_coefficient
+    {en: 84.6, ru:  60.1, ua: 64.3 }
+  end
+
+  def sentences_coefficient
+    {en: 1.015, ru: 1.3, ua: 1.35 }
+  end
+
+  def locale
+    :en
+  end
 
   def average_number_of_syllables_per_word
     (avarage_syllables_per_word / words_quatntity)
   end
 
   def avarage_syllables_per_word
-    content.split.map { |x| x.scan(/[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/) }.flatten.size.to_f
+    content.split.map { |word|  syllables_quantity(word) }.flatten.size.to_f
+  end
+
+  def syllables_quantity(word)
+    case locale
+    when :en then word.scan(/[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/)
+    when :ua then word.scan(/[аоіюяїєиу]+e*|e(?!d$|ly).|[td]ed|le$/)
+    when :ru then word.scan(/[аоуыэеёюяи]+e*|e(?!d$|ly).|[td]ed|le$/)
+    end
   end
 
   def words_quatntity
