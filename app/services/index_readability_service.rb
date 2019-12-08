@@ -6,17 +6,18 @@ class IndexReadabilityService
   end
 
   def call
+    detect_language
     ( 206.835 - sentences_coefficient * average_sentence_length - syllables_coefficient * average_number_of_syllables_per_word ).to_i
   end
 
   private
 
   def sentences_coefficient
-    ({"en" => 1.015, "uk" => 1.35 , "ru" => 1.3} [DetectLanguage.simple_detect(content)])
+    ({"en" => 1.015, "uk" => 1.35 , "ru" => 1.3} [@lang])
   end
 
   def syllables_coefficient
-    ({"en" => 84.6, "uk" => 64.3 , "ru" => 60.1} [DetectLanguage.simple_detect(content)])
+    ({"en" => 84.6, "uk" => 64.3 , "ru" => 60.1} [@lang])
   end
 
   def average_sentence_length
@@ -40,10 +41,20 @@ class IndexReadabilityService
   end
 
   def syllables_quantity(word)
-    case [DetectLanguage.simple_detect(content)]
+    case [@lang]
     when ["en"] then word.scan(/[aiouy]+e*|e(?!d$|ly).|[td]ed|le$/)
     when ["uk"] then word.scan(/[аоіюяїєиу]+e*|e(?!d$|ly).|[td]ed|le$/)
     when ["ru"] then word.scan(/[аоуыэеёюяи]+e*|e(?!d$|ly).|[td]ed|le$/)
     end
+  end
+
+  def detect_language
+    @lang = DetectLanguage.simple_detect(content).to_sym
+    if @lang == :uk || @lang == :en || @lang == :ru
+      @lang = DetectLanguage.simple_detect(content)
+    else
+      @lang = "uk"
+    end
+    @lang
   end
 end

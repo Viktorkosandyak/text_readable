@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe IndexReadabilityService, type: :service do
   let(:content) { build(:post).content }
 
-  describe 'when we pass valid text' do
+  describe 'when we pass valid english text' do
     let(:readability_index) { IndexReadabilityService.new(content).call }
 
     it 'return readability index' do
@@ -22,3 +22,11 @@ RSpec.describe IndexReadabilityService, type: :service do
     end
   end
 end
+# Однією з родзинок української мови є те, що вона багата на зменшувальні форми. Навіть слово вороги має зменшувально-пестливу форму, яка вживається в гімні України. Пам’ятаєте: .згинуть наші вороженьки, як роса на сонці.
+# 71
+
+# PostgreSQL allows columns of a table to be defined as variable-length multidimensional arrays.
+# 24
+
+# Премьера продолжения сериала \"Екатерина 3. Самозванцы\" 2019 года в главной роли Марина Александрова. В третьей части показан самый сложный период правления Екатерины Великой, затрагивающий 1774-1776 годы.
+# 55
