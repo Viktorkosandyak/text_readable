@@ -50,11 +50,7 @@ class IndexReadabilityService
 
   def detect_language
     @lang = DetectLanguage.simple_detect(content).to_sym
-    if @lang == :uk || @lang == :en || @lang == :ru
-      @lang = DetectLanguage.simple_detect(content)
-    else
-      @lang = "uk"
-    end
+    @lang == :uk || @lang == :en || @lang == :ru ? @lang = DetectLanguage.simple_detect(content) : @lang = "uk"
     @lang
   end
 end
